@@ -21,5 +21,4 @@ Firmware file will be in ***.pio/build/esp12e/firmware.bin***
 
 # Credits
 
-For autoversion management script
-**PlatformIO forum** "How to build got revision into binary for version output?" https://community.platformio.org/t/how-to-build-got-revision-into-binary-for-version-output/15380/5
+*For autoversion management script* => **PlatformIO forum** ["How to build got revision into binary for version output?"](https://community.platformio.org/t/how-to-build-got-revision-into-binary-for-version-output/15380/5)
