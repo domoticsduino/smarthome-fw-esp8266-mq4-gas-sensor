@@ -15,6 +15,9 @@ def get_firmware_specifier_build_flag():
     build_version = porcelain.describe('.')  # '.' refers to the repository root dir
     build_flag = "-D AUTO_VERSION=\\\"" + build_version + "\\\""
     print ("Firmware Revision: " + build_version)
+    f=open("VERSION","w+")
+    f.write("%s" % build_version)
+    f.close()
     return (build_flag)
 
 env.Append(
