@@ -12,6 +12,8 @@ Depends on the following *dd libraries*:
  - ddmqtt
  - ddmq4
 
+## Compile & Build
+
 To build your firmware bin file:
  - clone this repository with the *--recursive* flag to checkout **dd-libraries**
  - rename file *include/user-config-template.h* in *include/user-config.h*
@@ -19,6 +21,9 @@ To build your firmware bin file:
  
 Firmware file will be in ***.pio/build/esp12e/firmware.bin***
 
-# Credits
+## Branches
+ - ***main*** contains work in progress commits - **NOT STABLE branch**
+ - ***master*** contains **STABLE** commits and releases
 
-*For autoversion management script* => **PlatformIO forum** ["How to build got revision into binary for version output?"](https://community.platformio.org/t/how-to-build-got-revision-into-binary-for-version-output/15380/5)
+## Credits
+ - *For autoversion management script* => **PlatformIO forum** ["How to build got revision into binary for version output?"](https://community.platformio.org/t/how-to-build-got-revision-into-binary-for-version-output/15380/5)
