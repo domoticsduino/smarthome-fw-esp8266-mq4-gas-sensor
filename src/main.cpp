@@ -91,6 +91,8 @@ void setup()
 		Serial.begin(SERIAL_BAUDRATE);
 
 	writeToSerial("ESP8266MCU11 Booting...", true);
+	writeToSerial("FW Version: ", false);
+	writeToSerial(AUTO_VERSION, true);
 
 	// WIFI
 	wifi.connect();
