@@ -2,6 +2,9 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
+#include <ESPAsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include <AsyncElegantOTA.h>
 
 #include "../include/config.h"
 
@@ -28,6 +31,10 @@ DynamicJsonBuffer jsonBuffer;
 JsonObject &configRoot = jsonBuffer.createObject();
 JsonObject &root = jsonBuffer.createObject();
 JsonObject &gas = root.createNestedObject("gas");
+JsonObject &jsonInfo = root.createNestedObject("info");
+
+// WEB SERVER - OTA
+AsyncWebServer server(80);
 
 void printDebugGas(DDMQ4Val gasValue)
 {
@@ -49,15 +56,15 @@ void printDebugGas(DDMQ4Val gasValue)
 	}
 }
 
-String generateJsonMessage(DDMQ4Val gasValue, int countSampleGas)
+String generateJsonMessage()
 {
 	DDMQ4Val gasValueTot;
 	if (countSampleGas > 0)
 	{
-		gasValueTot.sensorValue = gasValue.sensorValue / countSampleGas;
-		gasValueTot.ppm = gasValue.ppm / countSampleGas;
-		gasValueTot.percentage = gasValue.percentage / countSampleGas;
-		gasValueTot.realValue = gasValue.realValue / countSampleGas;
+		gasValueTot.sensorValue = sampleGasValues.sensorValue / countSampleGas;
+		gasValueTot.ppm = sampleGasValues.ppm / countSampleGas;
+		gasValueTot.percentage = sampleGasValues.percentage / countSampleGas;
+		gasValueTot.realValue = sampleGasValues.realValue / countSampleGas;
 		gas["error"] = "";
 	}
 	else
@@ -100,6 +107,17 @@ void setup()
 	//MQTT
 	clientMqtt.reconnectMQTT();
 
+	//WEB SERVER
+	jsonInfo["name"] = USER_SETTINGS_WIFI_HOSTNAME;
+	jsonInfo["version"] = AUTO_VERSION;
+	server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+		request->send(200, "application/json", generateJsonMessage());
+  });
+
+	AsyncElegantOTA.begin(&server);
+  server.begin();
+	writeToSerial("Http server started", true);
+
 	// MQ4
 	countSampleGas = 0;
 	currentSample = 0;
@@ -122,6 +140,8 @@ void setup()
 
 void loop()
 {
+	AsyncElegantOTA.loop();
+
 	delay(configRoot["readInterval"]);
 	clientMqtt.loop();
 
@@ -143,7 +163,7 @@ void loop()
 
 	if (++currentSample >= configRoot["numSamples"])
 	{
-		clientMqtt.sendMessage(TOPIC_P, generateJsonMessage(sampleGasValues, countSampleGas));
+		clientMqtt.sendMessage(TOPIC_P, generateJsonMessage());
 		currentSample = 0;
 		countSampleGas = 0;
 		sampleGasValues.sensorValue = 0.0;
