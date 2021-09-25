@@ -21,6 +21,12 @@ To build your firmware bin file:
  
 Firmware file will be in ***.pio/build/esp12e/firmware.bin***
 
+## OTA / WebServer support
+
+To upload using OTA, open *http://ip-device/update* on a browser and point to the firmware \*.bin file
+
+Open *http://ip-device* to get sensor state and device info in your browser
+
 ## Branches
  - ***main*** contains work in progress commits - **NOT STABLE branch**
  - ***master*** contains **STABLE** commits and releases
