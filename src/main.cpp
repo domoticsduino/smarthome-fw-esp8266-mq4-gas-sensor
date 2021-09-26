@@ -97,7 +97,8 @@ void setup()
 	if (SERIAL_ENABLED)
 		Serial.begin(SERIAL_BAUDRATE);
 
-	writeToSerial("ESP8266MCU11 Booting...", true);
+	writeToSerial(USER_SETTINGS_WIFI_HOSTNAME, false);
+	writeToSerial(" Booting...", true);
 	writeToSerial("FW Version: ", false);
 	writeToSerial(AUTO_VERSION, true);
 
@@ -113,7 +114,6 @@ void setup()
 	server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send(200, "application/json", generateJsonMessage());
   });
-
 	AsyncElegantOTA.begin(&server);
   server.begin();
 	writeToSerial("Http server started", true);
