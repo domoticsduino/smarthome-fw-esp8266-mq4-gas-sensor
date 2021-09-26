@@ -28,8 +28,8 @@ int countSampleGas;
 
 //JSON
 DynamicJsonBuffer jsonBuffer;
-JsonObject &configRoot = jsonBuffer.createObject();
 JsonObject &root = jsonBuffer.createObject();
+JsonObject &configRoot = root.createNestedObject("config");
 JsonObject &gas = root.createNestedObject("gas");
 JsonObject &jsonInfo = root.createNestedObject("info");
 
